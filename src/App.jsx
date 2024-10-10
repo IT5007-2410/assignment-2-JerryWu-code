@@ -6,7 +6,7 @@ const initialTravellers = [
     phone: 88885555,
     email: 'Jack@gmail.com',
     meal: 'Veg',
-    // seatNumber: 3,
+    seatNumber: 3,
     bookingTime: new Date(),
   },
   {
@@ -15,7 +15,7 @@ const initialTravellers = [
     phone: 88884444,
     email: 'Rose@gmail.com',
     meal: 'Non-Veg',
-    // seatNumber: 7,
+    seatNumber: 7,
     bookingTime: new Date(),
   },
 ];
@@ -100,23 +100,38 @@ class Homepage extends React.Component {
 	super();
 	}
 	render(){
-	return (
-	<div>
-		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-	</div>);
-	}
+    const { freeSeats, occupiedSeats } = this.props;
+    return (
+      <div>
+        {/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
+        <h2>Free Seats: {freeSeats}</h2>
+          <div className="seating-chart">
+            {[...Array(10)].map((_, index) => (
+              <button 
+              key={index}
+                className={this.props.occupiedSeats.includes(index) ? 'occupied-seat' : 'free-seat'}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+      </div>
+      );
+    }
 }
 class TicketToRide extends React.Component {
   constructor() {
     super();
-    this.state = { travellers: [], selector: 1};
+    this.state = { travellers: [], selector: 'homepage' };
     this.bookTraveller = this.bookTraveller.bind(this);
     this.deleteTraveller = this.deleteTraveller.bind(this);
+    this.setSelector = this.setSelector.bind(this);
   }
 
   setSelector(value)
   {
   	/*Q2. Function to set the value of component selector variable based on user's button click.*/
+    this.setState({ selector: value });
   }
   componentDidMount() {
     this.loadData();
@@ -131,25 +146,36 @@ class TicketToRide extends React.Component {
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
   }
-
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
   }
+
   render() {
+    const { selector, travellers } = this.state;
+    const freeSeats = 10 - travellers.length;
+    const occupiedSeats = travellers.map((traveller) => traveller.seatNumber);
+
     return (
       <div>
         <h1>Ticket To Ride</h1>
-	<div>
-	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
-	</div>
-	<div>
-		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
-		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-		{/*Q3. Code to call component that Displays Travellers.*/}
-		
-		{/*Q4. Code to call the component that adds a traveller.*/}
-		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-	</div>
+	      <div className="navbar">
+	        {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
+          <button onClick={() => this.setSelector('homepage')}>Homepage</button>
+          <button onClick={() => this.setSelector('display')}>Display Travellers</button>
+          <button onClick={() => this.setSelector('add')}>Add Traveller</button>
+          <button onClick={() => this.setSelector('delete')}>Delete Traveller</button>
+	      </div>
+        <div>
+          {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
+          {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
+          {selector === 'homepage' && <Homepage freeSeats={freeSeats} occupiedSeats={occupiedSeats} />}
+          {/*Q3. Code to call component that Displays Travellers.*/}
+          
+          {/*Q4. Code to call the component that adds a traveller.*/}
+
+          {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
+
+        </div>
       </div>
     );
   }
