@@ -72,13 +72,37 @@ class Add extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+    const form = document.forms.addTraveller;
+    const seatNumber = parseInt(form.seatnumber.value, 10);
+    if (seatNumber < 1 || seatNumber > 10) {
+      alert('Seat number must be between 1 and 10.');
+      return;
+    }
+    const newTraveller = {
+      id: Math.floor(Math.random() * 1000),
+      name: form.travellername.value,
+      phone: parseInt(form.travellerphone.value, 10),
+      email: form.travelleremail.value,
+      seatNumber: seatNumber,
+      meal: form.meal.value,
+      bookingTime: new Date(),
+    };
+    this.props.bookTraveller(newTraveller);
+    form.reset();
   }
 
   render() {
     return (
       <form name="addTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
-        <input type="text" name="travellername" placeholder="Name" />
+        <input type="text" name="travellername" placeholder="Name" required />
+        <input type="text" name="travellerphone" placeholder="Phone" required />
+        <input type="email" name="travelleremail" placeholder="Email" required />
+        <input type="text" name="seatnumber" placeholder="Seat Number (1-10)" required />
+        <select name="meal" required>
+          <option value="Non-Veg">Non-Veg</option>
+          <option value="Veg">Veg</option>
+        </select>
         <button>Add</button>
       </form>
     );
@@ -155,10 +179,14 @@ class TicketToRide extends React.Component {
     }, 500);
   }
 
-  bookTraveller(passenger) {
-	    /*Q4. Write code to add a passenger to the traveller state variable.*/
+  bookTraveller(traveller) {
+    /*Q4. Write code to add a passenger to the traveller state variable.*/
+    this.setState((prevState) => ({
+      travellers: [...prevState.travellers, traveller],
+    }));
   }
-  deleteTraveller(passenger) {
+  
+  deleteTraveller(traveller) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
   }
 
