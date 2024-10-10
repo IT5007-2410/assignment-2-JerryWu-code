@@ -6,7 +6,7 @@ const initialTravellers = [
     phone: 88885555,
     email: 'Jack@gmail.com',
     meal: 'Veg',
-    seatNumber: 3,
+    seatNumber: 1,
     bookingTime: new Date(),
   },
   {
@@ -78,8 +78,8 @@ class Add extends React.Component {
     }
     const form = document.forms.addTraveller;
     const seatNumber = parseInt(form.seatnumber.value, 10);
-    if (seatNumber < 1 || seatNumber > 10) {
-      alert('Seat number must be between 1 and 10.');
+    if (seatNumber < 0 || seatNumber > 9) {
+      alert('Seat number must be between 0 and 9.');
       return;
     }
     if (this.props.travellers.some((traveller) => traveller.seatNumber === seatNumber)) {
@@ -132,8 +132,12 @@ class Delete extends React.Component {
       alert('No travellers available to delete.');
       return;
     }
-    this.props.deleteTraveller(travellerId);
+    if (this.props.travellers.some((traveller) => traveller.id === travellerId)) {
+      this.props.deleteTraveller(travellerId);
+    } else {
+      alert('Invalid ID. Please enter an existing traveller ID.');
     form.reset();
+    }
   }
 
   render() {
@@ -160,10 +164,11 @@ class Homepage extends React.Component {
           <div className="seating-chart">
             {[...Array(10)].map((_, index) => (
               <button 
-              key={index}
+                key={index}
                 className={this.props.occupiedSeats.includes(index) ? 'occupied-seat' : 'free-seat'}
+                style={{ backgroundColor: this.props.occupiedSeats.includes(index) ? 'darkgray' : 'green', color: 'white' }}
               >
-                {index + 1}
+                {index}
               </button>
             ))}
           </div>
@@ -171,6 +176,7 @@ class Homepage extends React.Component {
       );
     }
 }
+
 class TicketToRide extends React.Component {
   constructor() {
     super();
