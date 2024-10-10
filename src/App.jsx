@@ -82,6 +82,10 @@ class Add extends React.Component {
       alert('Seat number must be between 1 and 10.');
       return;
     }
+    if (this.props.travellers.some((traveller) => traveller.seatNumber === seatNumber)) {
+      alert('Seat number is already occupied. Please choose a different seat.');
+      return;
+    }
     const newTraveller = {
       id: Math.floor(Math.random() * 1000),
       name: form.travellername.value,
