@@ -1,15 +1,24 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
   {
-    id: 1, name: 'Jack', phone: 88885555,
+    id: 1, 
+    name: 'Jack', 
+    phone: 88885555,
+    email: 'Jack@gmail.com',
+    meal: 'Veg',
+    // seatNumber: 3,
     bookingTime: new Date(),
   },
   {
-    id: 2, name: 'Rose', phone: 88884444,
+    id: 2, 
+    name: 'Rose', 
+    phone: 88884444,
+    email: 'Rose@gmail.com',
+    meal: 'Non-Veg',
+    // seatNumber: 7,
     bookingTime: new Date(),
   },
 ];
-
 
 function TravellerRow(props) {
   {/*Q3. Placeholder to initialize local variable based on traveller prop.*/}
